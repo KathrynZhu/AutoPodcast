@@ -43,7 +43,7 @@ async def submit_to_elevenlabs(text, file_path):
 
 # Background task for submitting text to ElevenLabs
 async def generate_voice(text, user_id, job_id):
-    file_path = f"files/{user_id}/{job_id}.mp3" # In practice, this would be an audio file
+    file_path = f"files/{user_id}/{job_id}.mp3"
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     await submit_to_elevenlabs(text, file_path)
 
