@@ -10,7 +10,7 @@ pip install -r api/requirements.txt
 
 Set the environment variable:
 
-Note: as-written the python request to elevenlabs does not appear to be using this. See
+Note: as written, the python request to elevenlabs does not appear to be using this. See
 the elevenlabs python library docs for info about making use of the API key.
 
 ```
@@ -37,7 +37,7 @@ This could easily be ported to any other Python web framework.
 ## Open the example client in a browser
 
 An example client is provided at api/client.html and can simply be opened in a browser as
-a file. Subbmitting text should result in a backend request to elevenlabs and a resulting
+a file. Submitting text should result in a backend request to elevenlabs and a resulting
 audio file written to `files/<userID>` which should subsequently be shown in the file
 list in the browser. Click an item in the list to play it.
 
