@@ -13,9 +13,6 @@ from pydub import AudioSegment
 from pydub.playback import play
 from elevenlabs import voices
 
-
-
-
 elevenlabs.set_api_key("41b70d01d548863403dcc1c9c6434582")
 
 # Not sure how this is used with the python client
@@ -60,7 +57,8 @@ async def ToAudio(element):
         element=element[len("[Outro"):].strip()
         with open('crime_outro.mp3', 'rb') as file:
             audio = file.read()
-        return audio    
+        return audio   
+     
 async def glue(paragraphs):
     concatenated_audio = AudioSegment.silent(duration=0)
     for index,paragraph in enumerate(paragraphs):
@@ -79,7 +77,8 @@ async def preprocess(text,filepath):
         generate(paragraphs,ToAudio)
         #glue(audiofiles)
         finalaudio=glue(paragraphs)
-        finalaudio.export("outputaudiofinal.mp3",format="mp3")
+        finalaudio.export(filepath,format="mp3")
+        #elevenlabs.save(finalaudio, filepath)
 
 
 async def submit_to_elevenlabs(text, file_path):
@@ -91,6 +90,8 @@ async def submit_to_elevenlabs(text, file_path):
     done in a background task, it might not really matter that much.
     """
     preprocess(text, file_path)
+
+    #elevenlabs.save(finalaudio, file_path)
 
 
 
@@ -124,6 +125,7 @@ async def create(request):
     data = await request.json()
     user_id = data["userId"]
     text = data["text"]
+    print(text)
     job_id = str(uuid.uuid4())
     background_tasks = BackgroundTasks()
     background_tasks.add_task(generate_voice, text, user_id, job_id)
