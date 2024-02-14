@@ -84,7 +84,7 @@ def main():
     #file_path = "C:\Users\DELL\Documents\GitHub\podcastpage\TextToAudio\test.txt"
 
     try:
-        with open("C:/Users/DELL/Documents/GitHub/podcastpage/TextToAudio/crimepod.txt",'r') as file:
+        with open("C:/Users/DELL/Documents/GitHub/podcastpage/TextToAudio/word.txt",'r') as file:
             text = file.read()
 
         # Segment the text into paragraphs
