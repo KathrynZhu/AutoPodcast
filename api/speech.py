@@ -62,7 +62,7 @@ async def ToAudio(element):
 async def glue(paragraphs):
     concatenated_audio = AudioSegment.silent(duration=0)
     for index,paragraph in enumerate(paragraphs):
-        audio = AudioSegment.from_mp3("output/clip_"+str(index)+".mp3")
+        audio = AudioSegment.from_mp3("files/{user_id}/clip_"+str(index)+".mp3")
         concatenated_audio += audio
     return concatenated_audio
 
@@ -70,7 +70,7 @@ async def preprocess(text,filepath):
         paragraphs = segment_paragraphs(text)
         
         paragraphs=paragraphs[:-2]
-        print(paragraphs)
+        #print(paragraphs)
 
 
         # Print the labeled paragraphs
@@ -125,7 +125,6 @@ async def create(request):
     data = await request.json()
     user_id = data["userId"]
     text = data["text"]
-    print(text)
     job_id = str(uuid.uuid4())
     background_tasks = BackgroundTasks()
     background_tasks.add_task(generate_voice, text, user_id, job_id)
