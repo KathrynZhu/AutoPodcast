@@ -13,6 +13,8 @@ from pydub import AudioSegment
 from pydub.playback import play
 from elevenlabs import voices
 
+
+
 elevenlabs.set_api_key("41b70d01d548863403dcc1c9c6434582")
 
 # Not sure how this is used with the python client
@@ -24,6 +26,7 @@ voice=voices()
 async def segment_paragraphs(text):
     # Split the text into paragraphs
     paragraphs = text.split("\n\n")
+    print(paragraphs)
     return paragraphs
 #def label_paragraphs(paragraphs):
     labeled_paragraphs = []
@@ -34,8 +37,8 @@ async def segment_paragraphs(text):
 async def generate(paragraphs,ToAudio):
     for index,paragraph in enumerate(paragraphs):
         audio=ToAudio(paragraph)
-        elevenlabs.save(audio,"output/clip_"+str(index)+".mp3")
-async def ToAudio(element):
+        elevenlabs.save(audio,"clip_"+str(index)+".mp3")
+def ToAudio(element):
     if element.startswith("Tom:"):
         element=element[len("Tom:"):].strip()
         audio=elevenlabs.generate(
@@ -67,16 +70,15 @@ async def glue(paragraphs):
     return concatenated_audio
 
 async def preprocess(text,filepath):
-        paragraphs = segment_paragraphs(text)
-        
-        paragraphs=paragraphs[:-2]
-        #print(paragraphs)
+        paragraphs = await segment_paragraphs(text)
+        paragraphs=paragraphs[:-1]
+        print(paragraphs)
 
 
         # Print the labeled paragraphs
-        generate(paragraphs,ToAudio)
+        await generate(paragraphs,ToAudio)
         #glue(audiofiles)
-        finalaudio=glue(paragraphs)
+        finalaudio= await glue(paragraphs)
         finalaudio.export(filepath,format="mp3")
         #elevenlabs.save(finalaudio, filepath)
 
@@ -89,7 +91,7 @@ async def submit_to_elevenlabs(text, file_path):
     should be usable in the current async context if desired. Since this fetch is
     done in a background task, it might not really matter that much.
     """
-    preprocess(text, file_path)
+    await preprocess(text, file_path)
 
     #elevenlabs.save(finalaudio, file_path)
 
