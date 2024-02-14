@@ -1,0 +1,243 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice API Client</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // The userID is currently hard-coded. When integrating this functionality
+            // into your firebase client app, you will want the grab the real userID
+            const userId = "testUserID"; // Replace with actual user ID
+            const apiUrl = "http://localhost:8000"; // Adjust according to your API's URL
+
+            function fetchFiles() {
+                fetch(`${apiUrl}/files?userId=${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const filesList = document.getElementById('filesList');
+                        filesList.innerHTML = ''; // Clear current list
+                        data.files.forEach(file => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = file;
+                            listItem.onclick = () => playFile(file);
+                            filesList.appendChild(listItem);
+                        });
+                    });
+            }
+
+            function submitText() {
+                const textInput = document.getElementById('textInput').value;
+                fetch(`${apiUrl}/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userId: userId, text: textInput }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Job submitted:', data.jobId);
+                    setTimeout(fetchFiles, 5000); // Adjust delay as needed. You may need
+                                                  // to introduce a polling status check
+                                                  // in order to know for sure when the
+                                                  // file is ready. Note that the status
+                                                  // endpoint has not yet been implemented.
+                });
+            }
+
+            function playFile(fileName) {
+                const audioPlayer = document.getElementById('audioPlayer');
+                const audioSource = `${apiUrl}/speech/${fileName}?userId=${userId}`;
+                audioPlayer.src = audioSource;
+                audioPlayer.play().catch(error => console.error('Error playing the file:', error));
+            }
+
+            document.getElementById('submitBtn').addEventListener('click', submitText);
+            fetchFiles(); // Initial fetch of files
+        });
+    </script>
+</head>
+<body>
+    <h1>Text to Voice Client</h1>
+    <div>
+        <input type="text" id="textInput" placeholder="Enter text here" style="width: 100%; height: 50px; font-size: 16px;">
+        <button id="submitBtn">Submit Text</button>
+    </div>
+    <h3>Select a file to play the audio</h3>
+    <ul id="filesList"></ul>
+    <audio id="audioPlayer" controls></audio>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice API Client</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #textInput {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        #submitBtn {
+            width: 100%;
+            padding: 10px;
+            background-color: #5c6bc0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #submitBtn:hover {
+            background-color: #3949ab;
+        }
+
+        #filesList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #filesList li {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #e3e3e3;
+            border: 1px solid #ddd;
+            margin-top: 5px;
+        }
+
+        #filesList li:hover {
+            background-color: #d5d5d5;
+        }
+
+        #audioPlayer {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        
+        .navbar {
+            overflow: hidden;
+            background-color: #5c6bc0;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // The userID is currently hard-coded. When integrating this functionality
+            // into your firebase client app, you will want the grab the real userID
+            const userId = "testUserID"; // Replace with actual user ID
+            const apiUrl = "http://localhost:8000"; // Adjust according to your API's URL
+
+            function fetchFiles() {
+                fetch(`${apiUrl}/files?userId=${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const filesList = document.getElementById('filesList');
+                        filesList.innerHTML = ''; // Clear current list
+                        data.files.forEach(file => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = file;
+                            listItem.onclick = () => playFile(file);
+                            filesList.appendChild(listItem);
+                        });
+                    });
+            }
+
+            function submitText() {
+                const textInput = document.getElementById('textInput').value;
+                fetch(`${apiUrl}/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userId: userId, text: textInput }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Job submitted:', data.jobId);
+                    setTimeout(fetchFiles, 5000); // Adjust delay as needed. You may need
+                                                  // to introduce a polling status check
+                                                  // in order to know for sure when the
+                                                  // file is ready. Note that the status
+                                                  // endpoint has not yet been implemented.
+                });
+            }
+
+            function playFile(fileName) {
+                const audioPlayer = document.getElementById('audioPlayer');
+                const audioSource = `${apiUrl}/speech/${fileName}?userId=${userId}`;
+                audioPlayer.src = audioSource;
+                audioPlayer.play().catch(error => console.error('Error playing the file:', error));
+            }
+
+            document.getElementById('submitBtn').addEventListener('click', submitText);
+            fetchFiles(); // Initial fetch of files
+        });
+    </script>
+</head>
+<body>
+    <div class="navbar">
+        <a href="home.html">Home</a> <!-- Update href with the correct path to your homepage -->
+        <a href="create.html">Create</a> <!-- Update href with the correct path to your create page -->
+        <a href="demo.html">Demo</a>
+    </div>
+    <div class="container">
+        <h1>Text to Voice Client</h1>
+        <div>
+            <input type="text" id="textInput" placeholder="Enter text here">
+            <button id="submitBtn">Submit Text</button>
+        </div>
+        <h3>Select a file to play the audio</h3>
+        <ul id="filesList"></ul>
+        <audio id="audioPlayer" controls></audio>
+    </div>
+    <script>
+        // Your existing JavaScript code goes here
+    </script>
+</body>
+</html>
+
