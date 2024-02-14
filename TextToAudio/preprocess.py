@@ -66,6 +66,11 @@ def ToAudio(element):
         with open('crime_intro.mp3', 'rb') as file:
             audio = file.read()
         return audio
+    elif element.startswith("[Outro"):
+        element=element[len("[Outro"):].strip()
+        with open('crime_outro.mp3', 'rb') as file:
+            audio = file.read()
+        return audio    
 def glue(paragraphs):
     concatenated_audio = AudioSegment.silent(duration=0)
     for index,paragraph in enumerate(paragraphs):
@@ -79,13 +84,13 @@ def main():
     #file_path = "C:\Users\DELL\Documents\GitHub\podcastpage\TextToAudio\test.txt"
 
     try:
-        with open("C:/Users/DELL/Documents/GitHub/podcastpage/TextToAudio/word.txt",'r') as file:
+        with open("C:/Users/DELL/Documents/GitHub/podcastpage/TextToAudio/crimepod.txt",'r') as file:
             text = file.read()
 
         # Segment the text into paragraphs
         paragraphs = segment_paragraphs(text)
         
-        paragraphs=paragraphs[:-1]
+        paragraphs=paragraphs[:-2]
         print(paragraphs)
 
 

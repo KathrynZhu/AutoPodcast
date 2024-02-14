@@ -8,15 +8,79 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse, FileResponse
 from starlette.background import BackgroundTasks
 from starlette.routing import Route
+import sys
+from pydub import AudioSegment
+from pydub.playback import play
+from elevenlabs import voices
 
 
-elevenlabs.set_api_key("e09f2bc589719cc0dffd7fab5803885e")
+
+
+elevenlabs.set_api_key("41b70d01d548863403dcc1c9c6434582")
 
 # Not sure how this is used with the python client
 ELEVENLABS_API_KEY = os.environ["ELEVENLABS_API_KEY"]
 
 
 ### Helper functions
+voice=voices()
+async def segment_paragraphs(text):
+    # Split the text into paragraphs
+    paragraphs = text.split("\n\n")
+    return paragraphs
+#def label_paragraphs(paragraphs):
+    labeled_paragraphs = []
+    for idx, paragraph in enumerate(paragraphs):
+        labeled_paragraphs.append(f"Paragraph {idx + 1}: {paragraph}")
+    return labeled_paragraphs
+
+async def generate(paragraphs,ToAudio):
+    for index,paragraph in enumerate(paragraphs):
+        audio=ToAudio(paragraph)
+        elevenlabs.save(audio,"output/clip_"+str(index)+".mp3")
+async def ToAudio(element):
+    if element.startswith("Tom:"):
+        element=element[len("Tom:"):].strip()
+        audio=elevenlabs.generate(
+        text=element,
+        voice=voice[1])
+        return audio
+    elif element.startswith("Alice:"): 
+        element=element[len("Alice:"):].strip()
+        audio=elevenlabs.generate(
+        text=element,
+        voice=voice[0])
+        return audio
+    elif element.startswith("[Intro"):
+        element=element[len("[Intro"):].strip()
+        with open('crime_intro.mp3', 'rb') as file:
+            audio = file.read()
+        return audio
+    elif element.startswith("[Outro"):
+        element=element[len("[Outro"):].strip()
+        with open('crime_outro.mp3', 'rb') as file:
+            audio = file.read()
+        return audio    
+async def glue(paragraphs):
+    concatenated_audio = AudioSegment.silent(duration=0)
+    for index,paragraph in enumerate(paragraphs):
+        audio = AudioSegment.from_mp3("output/clip_"+str(index)+".mp3")
+        concatenated_audio += audio
+    return concatenated_audio
+
+async def preprocess(text,filepath):
+        paragraphs = segment_paragraphs(text)
+        
+        paragraphs=paragraphs[:-2]
+        print(paragraphs)
+
+
+        # Print the labeled paragraphs
+        generate(paragraphs,ToAudio)
+        #glue(audiofiles)
+        finalaudio=glue(paragraphs)
+        finalaudio.export("outputaudiofinal.mp3",format="mp3")
+
 
 async def submit_to_elevenlabs(text, file_path):
     """Adapted from TextToAudio/audiooutputtest.py
@@ -26,7 +90,12 @@ async def submit_to_elevenlabs(text, file_path):
     should be usable in the current async context if desired. Since this fetch is
     done in a background task, it might not really matter that much.
     """
-    voice_id = "ZQe5CZNOzWyzPSCn5a3c"
+    preprocess(text, file_path)
+
+
+
+""" 
+   voice_id = "ZQe5CZNOzWyzPSCn5a3c"
     voice = elevenlabs.Voice(
         voice_id = voice_id,
         settings = elevenlabs.VoiceSettings(
@@ -38,7 +107,7 @@ async def submit_to_elevenlabs(text, file_path):
         text=text,
         voice=voice
     )
-    elevenlabs.save(audio, file_path)
+    elevenlabs.save(audio, file_path)"""
 
 
 
