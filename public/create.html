@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #8c73a3;
             margin: 0;
             padding: 20px;
             color: #333;
@@ -19,9 +19,9 @@
         }
 
         .container {
-            width: 80%;
+            width: 90%;
             margin: 0 auto;
-            background-color: #fff;
+            background-color: #ffffffce;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -101,7 +101,7 @@
         
         .navbar {
             overflow: hidden;
-            background-color: #5c6bc0;
+            background-color: #542a7a;
         }
 
         .navbar a {
@@ -193,6 +193,7 @@
     </script>
 </head>
 <body>
+
     <div class="navbar">
         <a href="home.html">Home</a> <!-- Update href with the correct path to your homepage -->
         <a href="create.html">Create</a> <!-- Update href with the correct path to your create page -->
@@ -206,26 +207,41 @@
                     <h2 style="color:rgb(138, 93, 10)"><ruby>Write down descriptions for your podcast</ruby></h2>
                     <textarea id="Description" placeholder="Enter description here" style="width: 60%; height: 50px; font-size: 16px;"></textarea>
                     <h2 style="color:rgb(138, 93, 10)"><ruby>Choose Your Speakers</ruby></h2>
-                    <button type="button" onclick="alert('Hello world!')">Alice</button>
+                    <form id="buttonForm">
+
+                    
+                    <input type="checkbox" id="Alice" name="buttons" value="Alice">                    
+                    <button onclick="playAudio('audioPlayer1')" type="button">Alice</button>
                     &nbsp;
-                    <button type="button" onclick="alert('Hello world!')">David</button>
+                    <input type="checkbox" id="David" name="buttons" value="David"> 
+                    <button onclick="playAudio('audioPlayer2')" type="button">David</button>
                     &nbsp;
-                    <button type="button" onclick="alert('Hello world!')">Tom</button>
+                    <input type="checkbox" id="Tom" name="buttons" value="Tom"> 
+                
+                    <button onclick="playAudio('audioPlayer3')" type="button">Tom</button>
                     &nbsp;
-                    <button type="button" onclick="alert('Hello world!')">Maddy</button>
+                    <input type="checkbox" id="Maddy" name="buttons" value="Maddy"> 
+                    <button onclick="playAudio('audioPlayer4')" type="button">Maddy</button>
                     &nbsp;
-                    <button type="button" onclick="alert('Hello world!')">Josh</button>
+                    <input type="checkbox" id="Josh" name="buttons" value="Josh"> 
+                    <button onclick="playAudio('audioPlayer5')" type="button">Josh</button>
                     <p>&nbsp;</p>
+                    <input type="checkbox" id="Taylor Swift" name="buttons" value="Taylor Swift"> 
                     <button type="button" onclick="alert('Hello world!')">Taylor Swift</button>
                     &nbsp;
+                    <input type="checkbox" id="Ryan Gosling" name="buttons" value="Ryan Gosling"> 
                     <button type="button" onclick="alert('Hello world!')">Ryan Gosling</button>
                     &nbsp;
+                    <input type="checkbox" id="Drake" name="buttons" value="Drake"> 
                     <button type="button" onclick="alert('Hello world!')">Drake</button>
                     &nbsp;
+                    <input type="checkbox" id="Donald Trump" name="buttons" value="Donald Trump"> 
                     <button type="button" onclick="alert('Hello world!')">Donald Trump</button>
                     &nbsp;
+                    <input type="checkbox" id="You" name="buttons" value="You"> 
                     <button type="button" onclick="alert('Hello world!')">You</button>
                     <p>&nbsp;</p>
+                    </form>
                     <button id="submitTextBtn">Submit Text</button>
                 </div>
                 <h3>Generated Script</h3>
@@ -256,8 +272,41 @@
         
     </div>
     <script>
+        function playAudio(playerId) {
+            const audioPlayer = document.getElementById(playerId);
+            audioPlayer.play();
+        }
+        function getSelectedButtons(){
+            const checkboxes = document.getElementsByName("buttons");
+            const selectedButtons = [];
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedButtons.push(checkbox.value);
+                }
+            });}
         // Your existing JavaScript code goes here
     </script>
+        <audio id="audioPlayer1" controls>
+            <source src="voiceid/voice0.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio id="audioPlayer2" controls>
+            <source src="voiceid/voice1.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio id="audioPlayer3" controls>
+            <source src="voiceid/voice2.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio id="audioPlayer4" controls>
+            <source src="voiceid/voice4.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio id="audioPlayer5" controls>
+            <source src="voiceid/voice8.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
 </body>
 </html>
 

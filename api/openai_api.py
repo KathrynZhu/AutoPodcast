@@ -6,7 +6,6 @@ import os
 import requests
 import uuid
 
-
 # Assuming you have set OPENAI_API_KEY as an environment variable
 #openai.api_key = os.getenv("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")
 openai.api_key = os.getenv("OPENAI_API_KEY")
