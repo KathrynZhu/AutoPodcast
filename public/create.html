@@ -140,14 +140,41 @@
                     });
             }
 
+            // function generateScript() {
+            //     const descriptionInput = document.getElementById('Description').value;
+            //     fetch(`${apiUrl}/generate-text`, { // Assuming this is your server endpoint
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //         },
+            //         body: JSON.stringify({ prompt: descriptionInput }),
+            //     })
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         console.log(data);
+            //         document.getElementById('Output').value = data.message.content;
+            //     })
+            //     .catch(error => console.error('Error:', error));
+            // }
             function generateScript() {
                 const descriptionInput = document.getElementById('Description').value;
+                    // Get all checkboxes with the name 'buttons'
+                const checkboxes = document.querySelectorAll('input[name="buttons"]:checked');
+                const selectedCheckboxValues = Array.from(checkboxes).map(checkbox => checkbox.value);
+                console.log(selectedCheckboxValues[0]);
+                
+                const requestData = {
+                   prompt: descriptionInput,
+                   selectedCheckboxValues: selectedCheckboxValues // Add the values of selected checkboxes
+                };
+
+
                 fetch(`${apiUrl}/generate-text`, { // Assuming this is your server endpoint
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ prompt: descriptionInput }),
+                    body: JSON.stringify(requestData),
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -287,6 +314,7 @@
             });}
         // Your existing JavaScript code goes here
     </script>
+
         <audio id="audioPlayer1" controls>
             <source src="voiceid/voice0.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
@@ -307,6 +335,7 @@
             <source src="voiceid/voice8.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
+
 </body>
 </html>
 
