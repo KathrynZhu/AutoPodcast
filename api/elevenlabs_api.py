@@ -3,6 +3,7 @@ import elevenlabs
 import os
 import requests
 import uuid
+import shutil
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse, FileResponse
@@ -33,33 +34,114 @@ def segment_paragraphs(text):
 
 def generate(paragraphs,ToAudio):
     for index,paragraph in enumerate(paragraphs):
-        audio=ToAudio(paragraph)
-        elevenlabs.save(audio,"output/clip_"+str(index)+".mp3")
+        # if paragraph.startswith("[Intro]"):
+        #     intro_path = 'music/crime_intro.mp3'
+        #     shutil.copy(intro_path, "output/clip_"+str(index)+".mp3")
+        # elif paragraph.startswith("[Outro]"):
+        #     outro_path = 'music/crime_outro.mp3'
+        #     shutil.copy(outro_path, "output/clip_"+str(index)+".mp3")
+        # else:
+            # print("printing here in generate = " + paragraph)
+            audio=ToAudio(paragraph)
+            elevenlabs.save(audio,"output/clip_"+str(index)+".mp3")
 
+# def ToAudio(element):
+#     if element.startswith("Tom:"):
+#         element=element[len("Tom:"):].strip()
+#         audio=elevenlabs.generate(
+#         text=element,
+#         voice=voice[1])
+#         return audio
+#     elif element.startswith("Alice:"): 
+#         element=element[len("Alice:"):].strip()
+#         audio=elevenlabs.generate(
+#         text=element,
+#         voice=voice[13])
+#         return audio
+#     elif element.startswith("[Intro"):
+#         element=element[len("[Intro"):].strip()
+#         with open('music/crime_intro.mp3', 'rb') as file:
+#             audio = file.read()
+#         return audio
+#     elif element.startswith("[Outro"):
+#         element=element[len("music/[Outro"):].strip()
+#         with open('music/crime_outro.mp3', 'rb') as file:
+#             audio = file.read()
+#         return audio   
+     
 def ToAudio(element):
-    if element.startswith("Tom:"):
-        element=element[len("Tom:"):].strip()
-        audio=elevenlabs.generate(
-        text=element,
-        voice=voice[1])
-        return audio
-    elif element.startswith("Alice:"): 
+    print("printing here in toaudio = " + element)
+    if element.startswith("Alice:"):
         element=element[len("Alice:"):].strip()
         audio=elevenlabs.generate(
         text=element,
         voice=voice[0])
         return audio
-    elif element.startswith("[Intro"):
-        element=element[len("[Intro"):].strip()
-        with open('crime_intro.mp3', 'rb') as file:
+    elif element.startswith("David:"): 
+        element=element[len("David:"):].strip()
+        audio=elevenlabs.generate(
+        text=element,
+        voice=voice[1])
+        return audio
+    elif element.startswith("Tom:"): 
+        element=element[len("Tom:"):].strip()
+        audio=elevenlabs.generate(
+        text=element,
+        voice=voice[2])
+        return audio
+    elif element.startswith("Maddy:"): 
+        element=element[len("Maddy:"):].strip()
+        audio=elevenlabs.generate(
+        text=element,
+        voice=voice[3])
+        return audio   
+    elif element.startswith("Josh:"): 
+        element=element[len("Josh:"):].strip()
+        audio=elevenlabs.generate(
+        text=element,
+        voice=voice[3])
+        return audio  
+    elif element.startswith("Annabelle:"):
+        element=element[len("Annabelle:"):].strip()
+        audio=elevenlabs.generate(
+        text=element,
+        voice=voice[13])
+        return audio
+    elif element.startswith("Ryan Gosling:"): 
+        element=element[len("Ryan Gosling:"):].strip()
+        audio=elevenlabs.generate(
+        text=element,
+        voice=voice[14])
+        return audio
+    elif element.startswith("Drake:"): 
+        element=element[len("Drake:"):].strip()
+        audio=elevenlabs.generate(
+        text=element,
+        voice=voice[15])
+        return audio
+    elif element.startswith("Lin Manuel Miranda:"): 
+        element=element[len("Lin Manuel Miranda:"):].strip()
+        audio=elevenlabs.generate(
+        text=element,
+        voice=voice[16])
+        return audio   
+    elif element.startswith("Donald Trump:"): 
+        element=element[len("Donald Trump"):].strip()
+        audio=elevenlabs.generate(
+        text=element,
+        voice=voice[17])
+        return audio
+    elif element.startswith("[Intro]"):
+        element=element[len("[Intro]"):].strip()
+        with open('music/crime_intro.mp3', 'rb') as file:
             audio = file.read()
         return audio
-    elif element.startswith("[Outro"):
-        element=element[len("[Outro"):].strip()
-        with open('crime_outro.mp3', 'rb') as file:
+    elif element.startswith("[Outro]"):
+        element=element[len("[Outro]"):].strip()
+        with open('music/crime_outro.mp3', 'rb') as file:
             audio = file.read()
-        return audio   
-     
+        return audio 
+
 def glue(paragraphs):
     concatenated_audio = AudioSegment.silent(duration=0)
     for index,paragraph in enumerate(paragraphs):

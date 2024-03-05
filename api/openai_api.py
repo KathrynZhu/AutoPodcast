@@ -8,7 +8,6 @@ import uuid
 
 
 # Assuming you have set OPENAI_API_KEY as an environment variable
-#openai.api_key = os.getenv("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")
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
@@ -41,6 +40,8 @@ async def generate_text_from_openai(request):
             ]
         )
         message = response.choices[0].message
+        print(message.content)
+        message.content = "[Intro]\n\n" + message.content + "\n\n[Outro]\n"
         return JSONResponse({"message": message})
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
