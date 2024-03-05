@@ -23,7 +23,7 @@ response = requests.get(url, headers=headers)
 # The JSON response from the API is parsed using the built-in .json() method from the 'requests' library. 
 # This transforms the JSON data into a Python dictionary for further processing.
 data = response.json()
-
+i=0
 # A loop is created to iterate over each 'voice' in the 'voices' list from the parsed data. 
 # The 'voices' list consists of dictionaries, each representing a unique voice provided by the API.
 for voice in data['voices']:
@@ -31,3 +31,5 @@ for voice in data['voices']:
 # These keys in the voice dictionary contain values that provide information about the specific voice.
 #print(f"{voice['name']}: {voice['voice_id']}")
     print(f"{voice['name']}: {voice['voice_id']}")
+    i+=1
+print(i)
