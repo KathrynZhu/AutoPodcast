@@ -8,7 +8,9 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse, FileResponse
 from starlette.background import BackgroundTasks
 from starlette.routing import Route
-
+from elevenlabs import voices
+from pydub import AudioSegment
+from pydub.playback import play
 
 elevenlabs.set_api_key("41b70d01d548863403dcc1c9c6434582")
 
@@ -17,6 +19,66 @@ ELEVENLABS_API_KEY = os.environ["ELEVENLABS_API_KEY"]
 
 
 ### Helper functions
+voice=voices()
+def segment_paragraphs(text):
+    # Split the text into paragraphs
+    paragraphs = text.split("\n\n")
+    print(paragraphs)
+    return paragraphs
+#def label_paragraphs(paragraphs):
+    labeled_paragraphs = []
+    for idx, paragraph in enumerate(paragraphs):
+        labeled_paragraphs.append(f"Paragraph {idx + 1}: {paragraph}")
+    return labeled_paragraphs
+
+def generate(paragraphs,ToAudio):
+    for index,paragraph in enumerate(paragraphs):
+        audio=ToAudio(paragraph)
+        elevenlabs.save(audio,"output/clip_"+str(index)+".mp3")
+
+def ToAudio(element):
+    if element.startswith("Tom:"):
+        element=element[len("Tom:"):].strip()
+        audio=elevenlabs.generate(
+        text=element,
+        voice=voice[1])
+        return audio
+    elif element.startswith("Alice:"): 
+        element=element[len("Alice:"):].strip()
+        audio=elevenlabs.generate(
+        text=element,
+        voice=voice[0])
+        return audio
+    elif element.startswith("[Intro"):
+        element=element[len("[Intro"):].strip()
+        with open('crime_intro.mp3', 'rb') as file:
+            audio = file.read()
+        return audio
+    elif element.startswith("[Outro"):
+        element=element[len("[Outro"):].strip()
+        with open('crime_outro.mp3', 'rb') as file:
+            audio = file.read()
+        return audio   
+     
+def glue(paragraphs):
+    concatenated_audio = AudioSegment.silent(duration=0)
+    for index,paragraph in enumerate(paragraphs):
+        audio = AudioSegment.from_mp3("output/clip_"+str(index)+".mp3")
+        concatenated_audio += audio
+    return concatenated_audio
+
+async def preprocess(text,filepath):
+        paragraphs = segment_paragraphs(text)
+        #paragraphs=paragraphs[:]
+        print(paragraphs)
+
+
+        # Print the labeled paragraphs
+        generate(paragraphs,ToAudio)
+        #glue(audiofiles)
+        finalaudio= glue(paragraphs)
+        finalaudio.export(filepath,format="mp3")
+        #elevenlabs.save(finalaudio, filepath)
 
 async def submit_to_elevenlabs(text, file_path):
     """Adapted from TextToAudio/audiooutputtest.py
@@ -26,19 +88,20 @@ async def submit_to_elevenlabs(text, file_path):
     should be usable in the current async context if desired. Since this fetch is
     done in a background task, it might not really matter that much.
     """
-    voice_id = "ZQe5CZNOzWyzPSCn5a3c"
-    voice = elevenlabs.Voice(
-        voice_id = voice_id,
-        settings = elevenlabs.VoiceSettings(
-            stability = 1,
-            similarity_boost = 0.75
-        )
-    )
-    audio=elevenlabs.generate(
-        text=text,
-        voice=voice
-    )
-    elevenlabs.save(audio, file_path)
+    # voice_id = "ZQe5CZNOzWyzPSCn5a3c"
+    # voice = elevenlabs.Voice(
+    #     voice_id = voice_id,
+    #     settings = elevenlabs.VoiceSettings(
+    #         stability = 1,
+    #         similarity_boost = 0.75
+    #     )
+    # )
+    # audio=elevenlabs.generate(
+    #     text=text,
+    #     voice=voice
+    # )
+    # elevenlabs.save(audio, file_path)
+    await preprocess(text, file_path)
 
 
 
@@ -85,22 +148,3 @@ async def files(request):
     file_list = os.listdir(directory)
     return JSONResponse({"files": file_list})
 
-
-### Application setup
-
-# routes = [
-#     Route("/create", create, methods=["POST"]),
-#     Route("/status/{job_id}", status, methods=["GET"]),
-#     Route("/speech/{job_id}", speech, methods=["GET"]),
-#     Route("/files", files, methods=["GET"])
-# ]
-
-
-# app = Starlette(debug=True, routes=routes)
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["*"],  # Adjust this to your needs
-#     allow_credentials=True,
-#     allow_methods=["*"],  # Or specify just ["GET", "POST"]
-#     allow_headers=["*"],  # Adjust according to what headers you need
-# )
