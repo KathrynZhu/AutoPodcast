@@ -51,7 +51,7 @@
     <style>
         .navbar {
             overflow: hidden;
-            background-color: #5c6bc0;
+            background-color: #542a7a;
         }
 
         .navbar a {
@@ -81,6 +81,17 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             margin: 10px; /* Adjust or remove margin as needed */
         }
+        .audio-players-container {
+            display: flex; /* Use flexbox layout */
+            justify-content: space-between; /* Distribute items evenly along the main axis */
+            justify-content: center;
+
+         }
+
+        .audio-player {
+            width: 32%; /* Set width for each audio player */
+        }
+
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -105,6 +116,26 @@
         <img src="/Users/DELL/Documents/GitHub/podcastpage/public/podcast-news.png" alt="First Image Description">
         <img src="/Users/DELL/Documents/GitHub/podcastpage/public/Best-story-podcasts.png " alt="Second Image Description">
         <img src="/Users/DELL/Documents/GitHub/podcastpage/public/Podcast-Music.png " alt="Second Image Description">
+    </div>
+    <div class="audio-players-container">
+        <!-- Audio Player 1 -->
+        <div class="audio-player">
+            <audio controls>
+                <source src="voiceid/voice0.mp3" type="audio/mpeg">
+            </audio>
+        </div>        
+        <!-- Audio Player 2 -->
+        <div class="audio-player">
+            <audio controls>
+                <source src="voiceid/voice1.mp3" type="audio/mpeg">
+            </audio>
+        </div>        
+        <!-- Audio Player 3 -->
+        <div class="audio-player">
+            <audio controls>
+                <source src="voiceid/voice2.mp3" type="audio/mpeg">
+            </audio>
+        </div>
     </div>
 
     <!-- Other content goes here -->
