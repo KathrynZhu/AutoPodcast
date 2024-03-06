@@ -23,6 +23,6 @@ Step 6: Browse Demo Page for samples we made and more ideas
 
 _**Feel free to check our pre-recorded demo video autopoddemo.mp4**_
 ## Credit
-This is a course project of CS495: NUvention:Media. Morgan and Taylor created the lean business model, wrote the user stories and completed all written documentation. Kathryn and Mengnan built the tool, conducted the product development work and created the diagrams.
+This is a course project of CS496: NUvention:Media. Morgan and Taylor created the lean business model, wrote the user stories and completed all written documentation. Kathryn and Mengnan built the tool, conducted the product development work and created the diagrams.
 
 Many thanks to Scott Bradley, who has helped us so much solving techinical problems and given many useful instructions. We also appreciate the assistance from Knight Lab for granting us access to the openai api key.
