@@ -20,6 +20,8 @@ Step 4: Generate script and paste the script to the voice generator, hit submit 
 Step 5: Listen to the podcast/Download audio file from our webpage
 
 Step 6: Browse Demo Page for samples we made and more ideas
+
+_**Feel free to check our pre-recorded demo video autopoddemo.mp4**_
 ## Credit
 This is a course project of CS495: NUvention:Media. Morgan and Taylor created the lean business model, wrote the user stories and completed all written documentation. Kathryn and Mengnan built the tool, conducted the product development work and created the diagrams.
 
