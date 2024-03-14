@@ -4,6 +4,7 @@ import os
 import requests
 import uuid
 import shutil
+from datetime import datetime
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse, FileResponse
@@ -13,7 +14,7 @@ from elevenlabs import voices
 from pydub import AudioSegment
 from pydub.playback import play
 
-elevenlabs.set_api_key("41b70d01d548863403dcc1c9c6434582")
+elevenlabs.set_api_key("b7e5805cd3d4cb88f8a81cdc088d2f51")
 
 # Not sure how this is used with the python client
 ELEVENLABS_API_KEY = os.environ["ELEVENLABS_API_KEY"]
@@ -43,31 +44,7 @@ def generate(paragraphs,ToAudio):
         # else:
             # print("printing here in generate = " + paragraph)
             audio=ToAudio(paragraph)
-            elevenlabs.save(audio,"output/clip_"+str(index)+".mp3")
-
-# def ToAudio(element):
-#     if element.startswith("Tom:"):
-#         element=element[len("Tom:"):].strip()
-#         audio=elevenlabs.generate(
-#         text=element,
-#         voice=voice[1])
-#         return audio
-#     elif element.startswith("Alice:"): 
-#         element=element[len("Alice:"):].strip()
-#         audio=elevenlabs.generate(
-#         text=element,
-#         voice=voice[13])
-#         return audio
-#     elif element.startswith("[Intro"):
-#         element=element[len("[Intro"):].strip()
-#         with open('music/crime_intro.mp3', 'rb') as file:
-#             audio = file.read()
-#         return audio
-#     elif element.startswith("[Outro"):
-#         element=element[len("music/[Outro"):].strip()
-#         with open('music/crime_outro.mp3', 'rb') as file:
-#             audio = file.read()
-#         return audio   
+            elevenlabs.save(audio,"output/clip_"+str(index)+".mp3")  
      
 def ToAudio(element):
     print("printing here in toaudio = " + element)
@@ -93,13 +70,13 @@ def ToAudio(element):
         element=element[len("Maddy:"):].strip()
         audio=elevenlabs.generate(
         text=element,
-        voice=voice[3])
+        voice=voice[4])
         return audio   
     elif element.startswith("Josh:"): 
         element=element[len("Josh:"):].strip()
         audio=elevenlabs.generate(
         text=element,
-        voice=voice[3])
+        voice=voice[8])
         return audio  
     elif element.startswith("Annabelle:"):
         element=element[len("Annabelle:"):].strip()
@@ -154,7 +131,6 @@ async def preprocess(text,filepath):
         #paragraphs=paragraphs[:]
         print(paragraphs)
 
-
         # Print the labeled paragraphs
         generate(paragraphs,ToAudio)
         #glue(audiofiles)
@@ -189,9 +165,11 @@ async def submit_to_elevenlabs(text, file_path):
 
 # Background task for submitting text to ElevenLabs
 async def generate_voice(text, user_id, job_id):
-    file_path = f"files/{user_id}/{job_id}.mp3"
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    file_path = f"files/{user_id}/{timestamp}.mp3"
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     await submit_to_elevenlabs(text, file_path)
+    return 
 
 
 ### Endpoint handlers

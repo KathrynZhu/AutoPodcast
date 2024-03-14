@@ -15,12 +15,15 @@ the elevenlabs python library docs for info about making use of the API key.
 
 ```
 export ELEVENLABS_API_KEY=your-api-key
+export OPENAI_API_KEY='your_real_openai_api_key_here'
 ```
 
 
 Run the API:
 
 ```
+uvicorn main:app --reload
+
 uvicorn api.speech:app --reload
 ```
 
@@ -44,3 +47,6 @@ list in the browser. Click an item in the list to play it.
 This is meant as a reference example for baseline functionality with the backend API
 and does not provide, e.g. user authentication. The userID is currently hard-coded into
 the client-side javascript.
+
+
+
